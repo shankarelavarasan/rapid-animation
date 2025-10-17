@@ -18,6 +18,16 @@ os.makedirs(static_dir, exist_ok=True)
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 
+@app.get("/")
+async def root():
+    return {
+        "message": "AI 2D→3D Backend running",
+        "health": "/health",
+        "upload": "/upload",
+        "docs": "/docs",
+    }
+
+
 @app.get("/health")
 async def health():
     return {"status": "ok"}
