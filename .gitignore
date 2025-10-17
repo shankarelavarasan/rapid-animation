@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+__pycache__/
+*.pyc
+ai-2d3d-video/backend/tmp/
+ai-2d3d-video/backend/static/output.mp4
+.venv/
+backend/.venv/

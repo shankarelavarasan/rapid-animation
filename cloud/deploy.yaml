@@ -1,0 +1,18 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: ai-2d3d-backend
+spec:
+  template:
+    spec:
+      containers:
+        - image: gcr.io/$PROJECT_ID/ai-2d3d-backend:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GCS_BUCKET_NAME
+              value: your-bucket
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
