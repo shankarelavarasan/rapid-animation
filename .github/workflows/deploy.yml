@@ -9,12 +9,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Validate required secrets
+        shell: bash
+        run: |
+          if [ -z "${{ secrets.GCP_SA_KEY }}" ]; then
+            echo "::error::Missing GCP_SA_KEY secret";
+            exit 1;
+          fi
+          if [ -z "${{ secrets.GCP_PROJECT_ID }}" ]; then
+            echo "::error::Missing GCP_PROJECT_ID secret";
+            exit 1;
+          fi
+          if [ -z "${{ secrets.GCP_REGION }}" ]; then
+            echo "::error::Missing GCP_REGION secret";
+            exit 1;
+          fi
+
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Authenticate
+      - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
@@ -25,4 +41,5 @@ jobs:
             --source backend \
             --region ${{ secrets.GCP_REGION }} \
             --platform managed \
-            --allow-unauthenticated
+            --allow-unauthenticated \
+            --project ${{ secrets.GCP_PROJECT_ID }}
